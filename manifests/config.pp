@@ -194,8 +194,8 @@ class elasticsearch::config inherits elasticsearch {
     | EOF
 
     file { "${elasticsearch::configdir}/jvm.options":
+      ensure  => file,
       content => inline_template($jvm_options_template),
-      ensure  => present,
       group   => $elasticsearch::elasticsearch_group,
       notify  => $elasticsearch::_notify_service,
       owner   => $elasticsearch::elasticsearch_user,
