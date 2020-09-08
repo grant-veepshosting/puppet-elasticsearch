@@ -183,7 +183,7 @@ class elasticsearch::config {
     }
 
     # JVM options
-    $jvm_options = @(EOF)
+    $jvm_options_template = @(EOF)
     # FILE MANAGED BY PUPPET - DO NOT MODIFY
 
     <% @elasticsearch::jvm_options.flatten.each do|jvm_option| -%>
@@ -194,7 +194,7 @@ class elasticsearch::config {
     | EOF
 
     file { "${elasticsearch::configdir}/jvm.options":
-      content => inline_template($jvm_options),
+      content => inline_template($jvm_options_template),
       ensure  => present,
       group   => $elasticsearch::elasticsearch_group,
       notify  => $elasticsearch::_notify_service,
