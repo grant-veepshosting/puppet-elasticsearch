@@ -11,7 +11,7 @@
 # @author Tyler Langlois <tyler.langlois@elastic.co>
 # @author Gavin Williams <gavin.williams@elastic.co>
 #
-class elasticsearch::config {
+class elasticsearch::config inherits elasticsearch {
 
   #### Configuration
 
@@ -186,11 +186,11 @@ class elasticsearch::config {
     $jvm_options_template = @(EOF)
     # FILE MANAGED BY PUPPET - DO NOT MODIFY
 
-    <% @elasticsearch::jvm_options.flatten.each do|jvm_option| -%>
+    <% @jvm_options.flatten.each do|jvm_option| -%>
     <%= jvm_option %>
     <% end -%>
-    -Xms<%= @elasticsearch::xms %>
-    -Xmx<%= @elasticsearch::xmx %>
+    -Xms<%= @xms %>
+    -Xmx<%= @xmx %>
     | EOF
 
     file { "${elasticsearch::configdir}/jvm.options":
