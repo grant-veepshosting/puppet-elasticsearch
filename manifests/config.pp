@@ -182,14 +182,23 @@ class elasticsearch::config {
       mode     => '0440',
     }
 
-    # Add any additional JVM options
-    $elasticsearch::jvm_options.each |String $jvm_option| {
-      file_line { "jvm_option_${jvm_option}":
-        ensure => present,
-        path   => "${elasticsearch::configdir}/jvm.options",
-        line   => $jvm_option,
-        notify => $elasticsearch::_notify_service,
-      }
+    # JVM options
+    $jvm_options = @(EOF)
+    # FILE MANAGED BY PUPPET - DO NOT MODIFY
+
+    <% @elasticsearch::jvm_options.flatten.each do|jvm_option| -%>
+    <%= jvm_option %>
+    <% end -%>
+    -Xms<%= @elasticsearch::xms %>
+    -Xmx<%= @elasticsearch::xmx %>
+    | EOF
+
+    file { "${elasticsearch::configdir}/jvm.options":
+      content => inline_template($jvm_options),
+      ensure  => present,
+      group   => $elasticsearch::elasticsearch_group,
+      notify  => $elasticsearch::_notify_service,
+      owner   => $elasticsearch::elasticsearch_user,
     }
 
     if $elasticsearch::system_key != undef {
