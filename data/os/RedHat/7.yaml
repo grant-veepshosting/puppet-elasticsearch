@@ -1,0 +1,3 @@
+---
+elasticsearch::xms: '16g'
+elasticsearch::xmx: '16g'
