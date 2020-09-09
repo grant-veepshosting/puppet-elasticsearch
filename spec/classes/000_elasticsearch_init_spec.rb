@@ -337,8 +337,8 @@ describe 'elasticsearch', :type => 'class' do
 
       describe 'setting jvm_options' do
         jvm_options = [
-          '-Xms16g',
-          '-Xmx16g'
+          '-Xms2g',
+          '-Xmx2g'
         ]
 
         let(:params) do
